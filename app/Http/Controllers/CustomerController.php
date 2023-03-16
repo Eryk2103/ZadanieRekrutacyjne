@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use Exception;
 use Illuminate\Http\Response;
-
+use App\Models\User;
+use App\Http\Requests\CreateCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 
 class CustomerController extends Controller
 {
@@ -17,41 +19,48 @@ class CustomerController extends Controller
         return response(Customer::all(), 200);
     }
 
-    public function getById($id): Response
+    public function getById( $id): Response
     {
         $customer = Customer::find($id);
         if(!$customer) {
             return response(null, 404);
         }
+        $this->authorize('view', $customer);
         return response($customer, 200);
     }
 
-    public function create(Request $req): Response
+    public function create(CreateCustomerRequest $req): Response
     {
-        $customer = Customer::create($req->all());
+        $validated = $req->validated();
+        $customer = Customer::create($validated);
         
         return response($customer, 201);
     }
 
-    public function update(Request $req, $id): Response
+    public function update(UpdateCustomerRequest $req, $id): Response
     {
+        
         $customer = Customer::find($id);
-
         if(!$customer)
         {
             return response(null, 404);
         }
-        $customer->update($req->all());
+        $this->authorize('update', $customer);
+        $validated = $req->validated();
+        $customer->update($validated);
         
         return response($customer,200);
     }
 
     public function remove($id): Response
     {
-        $res = Customer::destroy($id);
-        if(!$res){
+        $customer = Customer::find($id);
+        if(!$customer)
+        {
             return response(null, 404);
         }
+        $this->authorize('delete', $customer);
+        $res = Customer::destroy($id);
         return response($res, 200);
     }
 }
