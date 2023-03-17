@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
-    public function getAll(): Response
+    public function getAll(Request $req): Response
     {
-        return response(Customer::where('user_id', Auth::id() )->get(), 200);
+        $perPage = $req->input('per_page');
+        return response(Customer::where('user_id', Auth::id() )->paginate($perPage), 200);
     }
     
     public function getById( $id): Response
