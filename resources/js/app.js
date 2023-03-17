@@ -1,14 +1,16 @@
 import './bootstrap';
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from './pages/Home.vue';
-import About from './pages/About.vue';
-import Dashboard from './pages/Dashboard.vue';
+import HomePage from './pages/HomePage.vue';
+import LoginPage from './pages/LoginPage.vue';
+import DashboardPage from './pages/DashboardPage.vue';
+import UserPage from './pages/UserPage.vue';
 
 const routes = [
-    { path: '/', component: Home },
-    { path: '/about', component: About },
-    { path: '/dashboard', component: Dashboard}
+    { path: '/', component: HomePage },
+    { path: '/login', component: LoginPage },
+    { path: '/dashboard', component: DashboardPage},
+    { path: '/user', component: UserPage}
   ]
 
   const router = createRouter({
