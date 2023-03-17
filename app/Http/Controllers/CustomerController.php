@@ -11,14 +11,15 @@ use Illuminate\Http\Response;
 use App\Models\User;
 use App\Http\Requests\CreateCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
     public function getAll(): Response
     {
-        return response(Customer::all(), 200);
+        return response(Customer::where('user_id', Auth::id() )->get(), 200);
     }
-
+    
     public function getById( $id): Response
     {
         $customer = Customer::find($id);
